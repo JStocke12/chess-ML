@@ -10,10 +10,10 @@ def main():
     games = pd.read_csv("games.csv") #https://www.kaggle.com/datasets/datasnaek/chess
     #print(games.head())
 
-    """games["opening_name_basic"] = games["opening_name"].map(lambda s: s.split(":")[0].split(" | ")[0].split(" #")[0])
+    games["opening_name_basic"] = games["opening_name"].map(lambda s: s.split(":")[0].split(" | ")[0].split(" #")[0])
     print(pd.unique(games["opening_name_basic"]))
     print(len(pd.unique(games["opening_name_basic"])))
-    print(len(games["opening_name"]))"""
+    print(len(games["opening_name"]))
 
     opening_eco_raw = games.loc[:, ['opening_eco']]
 
@@ -46,6 +46,29 @@ def main():
     print(y_test)
     print(reg.score(X_train,y_train))
     print(reg.score(X_test,y_test))
+
+    print(np.histogram(games["white_rating"],bins=np.linspace(700,2800,22)))
+    print(np.histogram(games[games["opening_eco"]=="A00"]["white_rating"],bins=np.linspace(500,3000,26)))
+    print(np.histogram(games[games["opening_eco"]=="A00"]["white_rating"],bins=np.linspace(700,2800,22))[0]/np.histogram(games["white_rating"],bins=np.linspace(700,2800,22))[0])
+
+    """plt.hist(games["white_rating"])
+
+    plt.show()
+
+    plt.hist(games[games["opening_eco"]=="A00"]["white_rating"])
+
+    plt.show()"""
+
+    """plt.bar(range(21),np.histogram(games[games["opening_eco"]=="A00"]["white_rating"],bins=np.linspace(700,2800,22))[0]/np.histogram(games["white_rating"],bins=np.linspace(700,2800,22))[0])
+
+    plt.show()"""
+
+    for i in pd.unique(games["opening_name_basic"]):
+        plt.bar(range(21),
+                np.histogram(games[games["opening_name_basic"] == i]["white_rating"], bins=np.linspace(700, 2800, 22))[0] /
+                np.histogram(games["white_rating"], bins=np.linspace(700, 2800, 22))[0])
+        plt.title(i)
+        plt.show()
 
     #plt.plot(line_xs,reg.predict(line_xs))
 
